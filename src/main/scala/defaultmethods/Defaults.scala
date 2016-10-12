@@ -197,13 +197,13 @@ class FindMethodsByErasedSig(var _method_name: String, var _method_signature: St
     }
 
     def add_method(method: Method, state: QualifiedState) = {
-      println(s"$method=$state")
+      println(s"${"  " * _path.length}${method.getDeclaringClass.getSimpleName}.${method.getName}=$state")
       _member_index(method) = _members.length
       _members += Tuple2(method, ObjectRef.create(state))
     }
 
     def disqualify_method(method: Method) = {
-      println(s"disqualify_method($method)")
+      println(s"${"  " * _path.length}${method.getDeclaringClass.getSimpleName}.${method.getName} = ${DISQUALIFIED}")
       _members.apply(_member_index(method))._2.elem = DISQUALIFIED
     }
 
@@ -352,7 +352,7 @@ class FindMethodsByErasedSig(var _method_name: String, var _method_signature: St
   // Find all methods on this hierarchy that match this
   // method's erased (name, signature)
   def visit() = {
-    println(_path)
+    println(s"${"  " * _path.length}${_path.last._class.getSimpleName}")
     val scope = current_data().asInstanceOf[PseudoScope]
     val iklass = current_class()
 
@@ -388,15 +388,20 @@ class FindMethodsByErasedSig(var _method_name: String, var _method_signature: St
 
 object Defaults {
   def main(args: Array[String]): Unit = {
-
-    val klass = Class.forName("java.util.AbstractSet")
-    new PrintHierarchy().run(klass)
-    val findMethodsByErasedSig = new FindMethodsByErasedSig("spliterator", "()Ljava/util/Spliterator;")
-    findMethodsByErasedSig.run(klass)
-    val methodFamily = findMethodsByErasedSig.get_discovered_family
-    methodFamily.determine_target(klass)
-    println(methodFamily)
-    Console.out.flush()
-    assert(methodFamily._exception_name == "")
+    def test(klass: Class[_], name: String, sig: String): Unit = {
+      println("=" * 80)
+      new PrintHierarchy().run(klass)
+      val findMethodsByErasedSig = new FindMethodsByErasedSig(name, sig)
+      findMethodsByErasedSig.run(klass)
+      val methodFamily = findMethodsByErasedSig.get_discovered_family
+      if (methodFamily != null) {
+        methodFamily.determine_target(klass)
+        println(methodFamily)
+        Console.out.flush()
+        assert(methodFamily._exception_name == "")
+      }
+    }
+    test(classOf[java.util.AbstractSet[_]], "spliterator", "()Ljava/util/Spliterator;")
+    test(classOf[List[_]], "head", "()Ljava/lang/Object;")
   }
 }
