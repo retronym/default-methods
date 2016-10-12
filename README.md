@@ -3,3 +3,532 @@
 A port of of the default method resolution algorithm from
 HotSpot JVM to Scala to help investigate its performance
 problems with our standard library
+
+```
+AbstractSet
+  AbstractCollection
+    Object
+    Collection
+      Iterable
+  Set
+  AbstractSet
+    AbstractCollection
+      Object
+      Collection
+      Collection.spliterator=QUALIFIED
+        Iterable
+        Iterable.spliterator=DISQUALIFIED
+    Set
+    Set.spliterator=QUALIFIED
+      Collection
+      Collection.spliterator = DISQUALIFIED
+        Iterable
+        Iterable.spliterator = DISQUALIFIED
+MethodFamily(public default java.util.Spliterator java.util.Set.spliterator(), , null)
+```
+
+
+```
+List
+  AbstractSeq
+    AbstractIterable
+      AbstractTraversable
+        Object
+        Traversable
+          TraversableLike
+            HasNewBuilder
+            FilterMonadic
+            TraversableOnce
+              GenTraversableOnce
+            GenTraversableLike
+              Parallelizable
+          GenTraversable
+            GenericTraversableTemplate
+      Iterable
+        GenIterable
+          GenIterableLike
+        IterableLike
+          Equals
+    Seq
+      PartialFunction
+        Function1
+      GenSeq
+        GenSeqLike
+      SeqLike
+  LinearSeq
+    Seq
+      Iterable
+        Traversable
+          Immutable
+    LinearSeq
+      LinearSeqLike
+  Product
+  LinearSeqOptimized
+  Serializable
+    Serializable
+  List
+    AbstractSeq
+      AbstractIterable
+        AbstractTraversable
+          Object
+          Traversable
+            TraversableLike
+            TraversableLike.head=QUALIFIED
+              HasNewBuilder
+              FilterMonadic
+              TraversableOnce
+                GenTraversableOnce
+              GenTraversableLike
+              GenTraversableLike.head=DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+            GenTraversable
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+              GenericTraversableTemplate
+              GenericTraversableTemplate.head=QUALIFIED
+                HasNewBuilder
+        Iterable
+          Traversable
+            TraversableLike
+              HasNewBuilder
+              FilterMonadic
+              TraversableOnce
+                GenTraversableOnce
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+            GenTraversable
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+              GenericTraversableTemplate
+                HasNewBuilder
+          GenIterable
+            GenIterableLike
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+            GenTraversable
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+              GenericTraversableTemplate
+                HasNewBuilder
+          IterableLike
+          IterableLike.head=QUALIFIED
+            Equals
+            TraversableLike
+            TraversableLike.head = DISQUALIFIED
+              HasNewBuilder
+              FilterMonadic
+              TraversableOnce
+                GenTraversableOnce
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+            GenIterableLike
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+      Seq
+        PartialFunction
+          Function1
+        Iterable
+          Traversable
+            TraversableLike
+              HasNewBuilder
+              FilterMonadic
+              TraversableOnce
+                GenTraversableOnce
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+            GenTraversable
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+              GenericTraversableTemplate
+                HasNewBuilder
+          GenIterable
+            GenIterableLike
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+            GenTraversable
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+              GenericTraversableTemplate
+                HasNewBuilder
+          IterableLike
+            Equals
+            TraversableLike
+            TraversableLike.head = DISQUALIFIED
+              HasNewBuilder
+              FilterMonadic
+              TraversableOnce
+                GenTraversableOnce
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+            GenIterableLike
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+        GenSeq
+          GenSeqLike
+            GenIterableLike
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+            Equals
+          GenIterable
+            GenIterableLike
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+            GenTraversable
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+              GenericTraversableTemplate
+                HasNewBuilder
+        SeqLike
+          IterableLike
+            Equals
+            TraversableLike
+            TraversableLike.head = DISQUALIFIED
+              HasNewBuilder
+              FilterMonadic
+              TraversableOnce
+                GenTraversableOnce
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+            GenIterableLike
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+          GenSeqLike
+            GenIterableLike
+              GenTraversableLike
+                GenTraversableOnce
+                Parallelizable
+            Equals
+    LinearSeq
+      Seq
+        Iterable
+          Traversable
+            Traversable
+              TraversableLike
+                HasNewBuilder
+                FilterMonadic
+                TraversableOnce
+                  GenTraversableOnce
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+              GenTraversable
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+                GenericTraversableTemplate
+                  HasNewBuilder
+            Immutable
+          Iterable
+            Traversable
+              TraversableLike
+                HasNewBuilder
+                FilterMonadic
+                TraversableOnce
+                  GenTraversableOnce
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+              GenTraversable
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+                GenericTraversableTemplate
+                  HasNewBuilder
+            GenIterable
+              GenIterableLike
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+              GenTraversable
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+                GenericTraversableTemplate
+                  HasNewBuilder
+            IterableLike
+              Equals
+              TraversableLike
+              TraversableLike.head = DISQUALIFIED
+                HasNewBuilder
+                FilterMonadic
+                TraversableOnce
+                  GenTraversableOnce
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+              GenIterableLike
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+        Seq
+          PartialFunction
+            Function1
+          Iterable
+            Traversable
+              TraversableLike
+                HasNewBuilder
+                FilterMonadic
+                TraversableOnce
+                  GenTraversableOnce
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+              GenTraversable
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+                GenericTraversableTemplate
+                  HasNewBuilder
+            GenIterable
+              GenIterableLike
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+              GenTraversable
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+                GenericTraversableTemplate
+                  HasNewBuilder
+            IterableLike
+              Equals
+              TraversableLike
+              TraversableLike.head = DISQUALIFIED
+                HasNewBuilder
+                FilterMonadic
+                TraversableOnce
+                  GenTraversableOnce
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+              GenIterableLike
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+          GenSeq
+            GenSeqLike
+              GenIterableLike
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+              Equals
+            GenIterable
+              GenIterableLike
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+              GenTraversable
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+                GenericTraversableTemplate
+                  HasNewBuilder
+          SeqLike
+            IterableLike
+              Equals
+              TraversableLike
+              TraversableLike.head = DISQUALIFIED
+                HasNewBuilder
+                FilterMonadic
+                TraversableOnce
+                  GenTraversableOnce
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+              GenIterableLike
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+            GenSeqLike
+              GenIterableLike
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+              Equals
+      LinearSeq
+        Seq
+          PartialFunction
+            Function1
+          Iterable
+            Traversable
+              TraversableLike
+                HasNewBuilder
+                FilterMonadic
+                TraversableOnce
+                  GenTraversableOnce
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+              GenTraversable
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+                GenericTraversableTemplate
+                  HasNewBuilder
+            GenIterable
+              GenIterableLike
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+              GenTraversable
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+                GenericTraversableTemplate
+                  HasNewBuilder
+            IterableLike
+              Equals
+              TraversableLike
+              TraversableLike.head = DISQUALIFIED
+                HasNewBuilder
+                FilterMonadic
+                TraversableOnce
+                  GenTraversableOnce
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+              GenIterableLike
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+          GenSeq
+            GenSeqLike
+              GenIterableLike
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+              Equals
+            GenIterable
+              GenIterableLike
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+              GenTraversable
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+                GenericTraversableTemplate
+                  HasNewBuilder
+          SeqLike
+            IterableLike
+              Equals
+              TraversableLike
+              TraversableLike.head = DISQUALIFIED
+                HasNewBuilder
+                FilterMonadic
+                TraversableOnce
+                  GenTraversableOnce
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+              GenIterableLike
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+            GenSeqLike
+              GenIterableLike
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+              Equals
+        LinearSeqLike
+          SeqLike
+            IterableLike
+              Equals
+              TraversableLike
+              TraversableLike.head = DISQUALIFIED
+                HasNewBuilder
+                FilterMonadic
+                TraversableOnce
+                  GenTraversableOnce
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+              GenIterableLike
+                GenTraversableLike
+                GenTraversableLike.head = DISQUALIFIED
+                  GenTraversableOnce
+                  Parallelizable
+            GenSeqLike
+              GenIterableLike
+                GenTraversableLike
+                  GenTraversableOnce
+                  Parallelizable
+              Equals
+    Product
+      Equals
+    LinearSeqOptimized
+    LinearSeqOptimized.head=QUALIFIED
+      LinearSeqLike
+        SeqLike
+          IterableLike
+          IterableLike.head = DISQUALIFIED
+            Equals
+            TraversableLike
+            TraversableLike.head = DISQUALIFIED
+              HasNewBuilder
+              FilterMonadic
+              TraversableOnce
+                GenTraversableOnce
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+            GenIterableLike
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+          GenSeqLike
+            GenIterableLike
+              GenTraversableLike
+              GenTraversableLike.head = DISQUALIFIED
+                GenTraversableOnce
+                Parallelizable
+            Equals
+    Serializable
+      Serializable
+MethodFamily(public abstract java.lang.Object scala.collection.immutable.List.head(), , null)
+```
