@@ -365,6 +365,7 @@ class FindMethodsByErasedSig(var _method_name: String, var _method_signature: St
         // first on searching, but overriding for invokevirtual needs
         // to find default method candidates for the same signature
         _family.set_target_if_empty(m)
+        return false
       }
     }
     true
