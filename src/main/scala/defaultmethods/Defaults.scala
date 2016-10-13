@@ -32,8 +32,6 @@ import scala.runtime.ObjectRef
 // http://hg.openjdk.java.net/jdk9/jdk9/hotspot/file/fec31089c2ef/src/share/vm/classfile/defaultMethods.cpp
 
 abstract class HierarchyVisitor {
-   val _visited = collection.mutable.Set[Class[_]]()
-
   case class Node(var _class: Class[_], var _algorithm_data: Any, visit_super: Boolean) {
     var _super_was_visited: Boolean = !visit_super
     var interface_index: Int = 0
@@ -120,12 +118,6 @@ abstract class HierarchyVisitor {
       var top: Node = current_top()
 
       if (top_needs_visit) {
-        def visitIfNotVisited() = {
-          if (!_visited(current_class())) {
-            _visited += current_class()
-            visit()
-          } else false
-        }
         if (!visit()) {
           // algorithm does not want to continue along this path.  Arrange
           // it so that this state is immediately popped off the stack
@@ -156,17 +148,11 @@ abstract class HierarchyVisitor {
 }
 
 class PrintHierarchy extends HierarchyVisitor {
-  val seen = collection.mutable.Set[Class[_]]()
   def visit(): Boolean = {
     val cls = current_class()
-    if (seen.contains(cls)) {
-      false
-    } else {
-      seen += cls
-      print("  " * current_depth())
-      println(cls.getSimpleName)
-      true
-    }
+    print("  " * current_depth())
+    println(cls.getSimpleName)
+    true
   }
 
   def new_node_data(cls: Class[_]): Any = { null; }
@@ -351,7 +337,7 @@ class FindMethodsByErasedSig(var _method_name: String, var _method_signature: St
 
   // Find all methods on this hierarchy that match this
   // method's erased (name, signature)
-  def visit() = {
+  def visit(): Boolean = {
     println(s"${"  " * _path.length}${_path.last._class.getSimpleName}")
     val scope = current_data().asInstanceOf[PseudoScope]
     val iklass = current_class()
@@ -389,8 +375,6 @@ class FindMethodsByErasedSig(var _method_name: String, var _method_signature: St
 object Defaults {
   def main(args: Array[String]): Unit = {
     def test(klass: Class[_], name: String, sig: String): Unit = {
-      println("=" * 80)
-      new PrintHierarchy().run(klass)
       val findMethodsByErasedSig = new FindMethodsByErasedSig(name, sig)
       findMethodsByErasedSig.run(klass)
       val methodFamily = findMethodsByErasedSig.get_discovered_family
